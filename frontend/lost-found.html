@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusConnect - Lost &amp; Found Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="portal">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand-top">
+                    <div class="logo-badge-container">
+                        <img src="logo.png" alt="Raj Kumar Goel Institute of Technology &amp; Management" class="brand-logo-img">
+                    </div>
+                    <button id="sidebarToggle">
+                        <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                </div>
+                <div class="sidebar-app-name">CampusConnect</div>
+            </div>
+            <p class="sidebar-title">STUDENT PORTAL</p>
+            <nav class="sidebar-nav">
+                <a href="index.html"><span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span> <span class="brand-text">Dashboard</span></a>
+                <a href="notices.html"><span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span> <span class="brand-text">Notices</span></a>
+                <a href="events.html"><span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span> <span class="brand-text">Events</span></a>
+                <a href="lost-found.html" class="active"><span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span> <span class="brand-text">Lost &amp; Found</span></a>
+                <a href="complaints.html"><span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span> <span class="brand-text">Complaints</span></a>
+                <a href="resources.html"><span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span> <span class="brand-text">Resources</span></a>
+                <a href="attendance.html"><span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span> <span class="brand-text">Attendance</span></a>
+                <a href="doubts.html"><span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span> <span class="brand-text">Doubt Solver</span></a>
+
+                <div class="nav-divider"></div>
+
+                <a href="settings.html"><span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span> <span class="brand-text">Settings</span></a>
+                <a href="login.html" onclick="localStorage.removeItem('campus_user_role');"><span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span> <span class="brand-text">Logout</span></a>
+            </nav>
+        </aside>
+
+        <main class="dashboard-content">
+            <header class="topbar">
+                <div class="topbar-title">
+                    <p class="small-text">Raj Kumar Goel Institute of Technology &amp; Management</p>
+                    <h1>Lost &amp; Found Portal</h1>
+                </div>
+                <div class="topbar-actions">
+                    <button id="themeToggle" class="theme-toggle-btn"></button>
+                    <div class="profile-wrapper">
+                        <button class="student-profile" id="studentProfile">
+                            <div class="profile-circle">S</div>
+                            <div class="profile-text">
+                                <strong class="profile-name-val">Student</strong>
+                                <p class="profile-course-val">Computer Science</p>
+                            </div>
+                            <span class="profile-arrow">▼</span>
+                        </button>
+                        <div class="profile-menu" id="profileMenu">
+                            <h3>Student Profile</h3>
+                            <p><span>Name:</span> <strong class="profile-name-val">Student</strong></p>
+                            <p><span>Course:</span> <strong class="profile-course-val">Computer Science</strong></p>
+                            <p><span>Year:</span> <strong class="profile-year-val">3rd Year</strong></p>
+                            <p><span>Section:</span> <strong class="profile-section-val">A</strong></p>
+                            <a href="settings.html" class="btn btn-secondary" style="margin-top: 8px; width: 100%;">Edit Profile</a>
+                            <a href="login.html" class="btn btn-primary" onclick="localStorage.removeItem('campus_user_role');" style="margin-top: 6px; width: 100%;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-controls">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search lost or found items...">
+                    <button id="searchButton">Search</button>
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">All Items</button>
+                    <button class="filter-tab" data-filter="lost">Lost</button>
+                    <button class="filter-tab" data-filter="found">Found</button>
+                </div>
+            </div>
+
+            <div class="events-grid" style="margin-bottom: 32px;">
+                <article class="event-card lost-card" data-category="lost">
+                    <div class="event-content">
+                        <div class="notice-header">
+                            <span class="badge badge-danger">LOST ITEM</span>
+                            <span class="notice-date">Reported Today</span>
+                        </div>
+                        <h3>Wireless Earbuds</h3>
+                        <p>Lost near Computer Science Lab 2 during the afternoon lecture session.</p>
+                        <div class="event-meta">
+                            <span>CS Building, 2nd Floor</span>
+                        </div>
+                        <div class="event-footer">
+                            <span class="badge badge-info">Contact Admin</span>
+                            <button class="btn btn-secondary" onclick="alert('Contact security desk or call student helpline.')">Claim Item</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="event-card lost-card" data-category="found">
+                    <div class="event-content">
+                        <div class="notice-header">
+                            <span class="badge badge-success">FOUND ITEM</span>
+                            <span class="notice-date">Reported Yesterday</span>
+                        </div>
+                        <h3>Leather Key Pouch</h3>
+                        <p>Found near the central library cafeteria table with 3 keys attached.</p>
+                        <div class="event-meta">
+                            <span>Central Library</span>
+                        </div>
+                        <div class="event-footer">
+                            <span class="badge badge-success">At Security Office</span>
+                            <button class="btn btn-primary" onclick="alert('Item deposited at Security Office Gate 1.')">View Details</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="event-card lost-card" data-category="lost">
+                    <div class="event-content">
+                        <div class="notice-header">
+                            <span class="badge badge-danger">LOST ITEM</span>
+                            <span class="notice-date">08 Sept 2026</span>
+                        </div>
+                        <h3>Data Structures Textbook</h3>
+                        <p>Hardcover edition with handwritten notes inside the front cover.</p>
+                        <div class="event-meta">
+                            <span>Main Canteen</span>
+                        </div>
+                        <div class="event-footer">
+                            <span class="badge badge-info">Owner Searching</span>
+                            <button class="btn btn-secondary" onclick="alert('Contact owner via campus desk.')">Claim Item</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="form-container">
+                <h2 style="margin-bottom: 16px;">Report a Lost or Found Item</h2>
+                <form id="lostFoundForm" onsubmit="event.preventDefault(); showToast('Item report registered successfully!'); this.reset();">
+                    <div class="form-group">
+                        <label for="itemStatus">Report Type</label>
+                        <select id="itemStatus" class="form-control">
+                            <option value="lost">I Lost an Item</option>
+                            <option value="found">I Found an Item</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemTitle">Item Name / Title</label>
+                        <input type="text" id="itemTitle" class="form-control" placeholder="e.g. Water Bottle, ID Card" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemLocation">Last Known Location</label>
+                        <input type="text" id="itemLocation" class="form-control" placeholder="e.g. Auditorium Hall B" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemDesc">Description &amp; Contact Info</label>
+                        <textarea id="itemDesc" class="form-control" placeholder="Describe unique features and how to return..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Item Report</button>
+                </form>
+            </div>
+
+            <footer>
+                <p>&copy; 2026 Raj Kumar Goel Institute of Technology &amp; Management. All Rights Reserved.</p>
+            </footer>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusConnect - Faculty &amp; Teacher Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="portal">
+        <!-- Faculty Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand-top">
+                    <div class="logo-badge-container">
+                        <img src="logo.png" alt="Raj Kumar Goel Institute of Technology &amp; Management" class="brand-logo-img">
+                    </div>
+                    <button id="sidebarToggle" title="Toggle Navigation">
+                        <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                </div>
+                <div class="sidebar-app-name">CampusConnect</div>
+            </div>
+
+            <p class="sidebar-title">FACULTY PORTAL</p>
+
+            <nav class="sidebar-nav">
+                <a href="faculty-index.html" class="active">
+                    <span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span>
+                    <span class="brand-text">Faculty Dashboard</span>
+                </a>
+                <a href="#noticeSection">
+                    <span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
+                    <span class="brand-text">Publish Notices</span>
+                </a>
+                <a href="#attendanceSection">
+                    <span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+                    <span class="brand-text">Mark Attendance</span>
+                </a>
+                <a href="#resourcesSection">
+                    <span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+                    <span class="brand-text">Upload Materials</span>
+                </a>
+                <a href="#complaintsSection">
+                    <span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+                    <span class="brand-text">Resolve Grievances</span>
+                </a>
+
+                <div class="nav-divider"></div>
+
+                <a href="#studentApprovalSection">
+                    <span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+                    <span class="brand-text">Student Approvals</span>
+                </a>
+
+                <div class="nav-divider"></div>
+
+                <a href="login.html" onclick="localStorage.removeItem('campus_user_role');">
+                    <span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+                    <span class="brand-text">Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+
+        <!-- Main Faculty Content -->
+        <main class="dashboard-content">
+            <header class="topbar">
+                <div class="topbar-title">
+                    <p class="small-text">Raj Kumar Goel Institute of Technology &amp; Management</p>
+                    <h1>Faculty Dashboard</h1>
+                </div>
+
+                <div class="topbar-actions">
+                    <button id="themeToggle" class="theme-toggle-btn" title="Toggle Dark/Light Mode"></button>
+
+                    <div class="profile-wrapper">
+                        <button class="student-profile" id="studentProfile" type="button">
+                            <div class="profile-circle" style="background: var(--accent);">F</div>
+                            <div class="profile-text">
+                                <strong>Prof. Dr. Rajesh Sharma</strong>
+                                <p>Computer Science Dept</p>
+                            </div>
+                            <span class="profile-arrow">▼</span>
+                        </button>
+                        <div class="profile-menu" id="profileMenu">
+                            <h3>Faculty Profile</h3>
+                            <p><span>Name:</span> <strong>Prof. Dr. Rajesh Sharma</strong></p>
+                            <p><span>Role:</span> <strong style="color: var(--primary);">Senior Faculty / TA</strong></p>
+                            <p><span>Department:</span> <strong>Computer Science</strong></p>
+                            <a href="login.html" class="btn btn-secondary" onclick="localStorage.removeItem('campus_user_role');" style="margin-top: 8px; width: 100%;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Faculty Welcome Banner -->
+            <section class="dashboard-welcome" style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);">
+                <p class="small-text" style="color: rgba(255, 255, 255, 0.9);">RKGITM FACULTY CONTROL PANEL</p>
+                <h2>Welcome, Professor Sharma</h2>
+                <p>Manage student attendance, publish department notices, upload lecture materials, and resolve student grievances.</p>
+            </section>
+
+            <!-- Overview Metrics -->
+            <section class="summary-cards">
+                <div class="summary-card">
+                    <p>Total Enrolled Students</p>
+                    <h2 style="color: var(--primary);">120</h2>
+                    <small>B.Tech CS 3rd Year (Sec A &amp; B)</small>
+                </div>
+
+                <div class="summary-card">
+                    <p>Published Notices</p>
+                    <h2>04</h2>
+                    <small>Active on student feed</small>
+                </div>
+
+                <div class="summary-card">
+                    <p>Pending Grievances</p>
+                    <h2 style="color: var(--warning);">02</h2>
+                    <small>Requires faculty review</small>
+                </div>
+
+                <div class="summary-card">
+                    <p>Uploaded Resources</p>
+                    <h2 style="color: var(--success);">12</h2>
+                    <small>Notes &amp; past question papers</small>
+                </div>
+            </section>
+
+            <!-- Grid Controls: Publish Notice & Mark Attendance -->
+            <div class="dashboard-grid">
+                <!-- Publish Notice Panel -->
+                <div class="form-container" id="noticeSection" style="margin: 0; max-width: none;">
+                    <h2>Publish New Notice for Students</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">This notice will immediately appear on the student dashboard.</p>
+
+                    <form onsubmit="event.preventDefault(); showToast('Notice published to student portal!'); this.reset();">
+                        <div class="form-group">
+                            <label for="fNoticeCategory">Notice Category</label>
+                            <select id="fNoticeCategory" class="form-control">
+                                <option value="academic">Academic Announcement</option>
+                                <option value="exam">Examination Alert</option>
+                                <option value="general">General Notice</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="fNoticeTitle">Notice Title</label>
+                            <input type="text" id="fNoticeTitle" class="form-control" placeholder="e.g. Sessional Exam Guidelines" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fNoticeContent">Notice Content</label>
+                            <textarea id="fNoticeContent" class="form-control" placeholder="Write the full announcement..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Publish Announcement →</button>
+                    </form>
+                </div>
+
+                <!-- Mark Attendance Panel -->
+                <div class="dashboard-box" id="attendanceSection">
+                    <div class="box-heading">
+                        <h2>Mark Class Attendance</h2>
+                    </div>
+
+                    <form id="facultyAttendanceForm">
+                        <div class="form-group">
+                            <label for="attendSubject">Select Subject</label>
+                            <div style="display: flex; gap: 8px;">
+                                <select id="attendSubject" class="form-control" style="flex: 1;" required>
+                                    <option value="java">Java Programming (CS-301)</option>
+                                    <option value="dbms">Database Management (CS-302)</option>
+                                    <option value="dsa">Data Structures (CS-303)</option>
+                                </select>
+                                <button type="button" class="btn btn-secondary" id="addFacultySubjectBtn" style="padding: 0 16px; font-size: 18px; font-weight: bold;" title="Add new subject">+</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="attendDate">Lecture Date</label>
+                            <input type="date" id="attendDate" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="attendStatus">Mark Class As</label>
+                            <select id="attendStatus" class="form-control" required>
+                                <option value="present">Present</option>
+                                <option value="absent">Absent</option>
+                                <option value="late">Late</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Save Attendance Sheet</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Upload Resources & Resolve Grievances -->
+            <div class="dashboard-grid">
+                <!-- Upload Materials -->
+                <div class="form-container" id="resourcesSection" style="margin: 0; max-width: none;">
+                    <h2>Upload Study Material / PDF</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Upload lecture slides, notes, or sample papers for students.</p>
+
+                    <form id="facultyResourceForm">
+                        <div class="form-group">
+                            <label for="resTitle">Resource Title</label>
+                            <input type="text" id="resTitle" class="form-control" placeholder="e.g. Unit 3 Java Multithreading Notes" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="resCategory">Type</label>
+                            <select id="resCategory" class="form-control">
+                                <option value="video">YouTube Video Lecture</option>
+                                <option value="notes">Lecture Notes (PDF)</option>
+                                <option value="papers">Past Question Paper</option>
+                                <option value="books">E-Book Reference</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="resLink">YouTube Link / URL</label>
+                            <input type="url" id="resLink" class="form-control" placeholder="https://www.youtube.com/watch?v=..." required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Publish Resource</button>
+                    </form>
+                </div>
+
+                <!-- Resolve Grievances Panel -->
+                <div class="dashboard-box" id="complaintsSection">
+                    <div class="box-heading">
+                        <h2>Pending Student Complaints</h2>
+                    </div>
+
+                    <div class="notices-grid">
+                        <div class="notice-card">
+                            <div class="notice-header">
+                                <span class="badge badge-warning">UNDER REVIEW</span>
+                                <span class="notice-date">04 Sept 2026</span>
+                            </div>
+                            <h3>CS Lab 3 Monitor Flicker Issue</h3>
+                            <p><strong>Student:</strong> Rahul Kumar (Sec A)</p>
+                            <p style="font-size: 13px; color: var(--text-secondary);">Monitors on row B suffer from screen flickering during lab sessions.</p>
+                            <button class="btn btn-primary" style="margin-top: 12px; padding: 6px 14px; font-size: 12.5px;" onclick="this.parentElement.querySelector('.badge').className='badge badge-success'; this.parentElement.querySelector('.badge').textContent='RESOLVED'; showToast('Complaint marked as Resolved!');">Mark Resolved ✓</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Student Approval Queue Section -->
+            <section id="studentApprovalSection" style="margin-bottom: 36px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <h2>Pending Student Registration Requests</h2>
+                        <p style="color: var(--text-muted); font-size: 13px;">Review and approve Student registrations from your department before they can access the portal.</p>
+                    </div>
+                    <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;" onclick="renderFacultyApprovalQueue()">
+                        <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.07"/></svg>
+                        Refresh Queue
+                    </button>
+                </div>
+
+                <div class="admin-table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Student Name &amp; Email</th>
+                                <th>Department</th>
+                                <th>Roll Number</th>
+                                <th>Section</th>
+                                <th>Submitted</th>
+                                <th>Status</th>
+                                <th style="text-align: center;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="facultyApprovalTbody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <footer>
+                <p>&copy; 2026 Raj Kumar Goel Institute of Technology &amp; Management. All Rights Reserved.</p>
+            </footer>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            renderFacultyApprovalQueue();
+            // Load faculty name from localStorage if available
+            const userName = localStorage.getItem('campus_user_name');
+            const userDept = localStorage.getItem('campus_user_dept');
+            if (userName) {
+                document.querySelector('.student-profile strong') && (document.querySelector('.student-profile strong').textContent = userName);
+            }
+            if (userDept) {
+                document.querySelector('.student-profile p') && (document.querySelector('.student-profile p').textContent = userDept);
+            }
+
+            // Logic for adding custom subject to faculty attendance dropdown
+            const addFacultySubjectBtn = document.getElementById("addFacultySubjectBtn");
+            const attendSubject = document.getElementById("attendSubject");
+            if (addFacultySubjectBtn && attendSubject) {
+                addFacultySubjectBtn.addEventListener("click", () => {
+                    const newSub = prompt("Enter new subject name:");
+                    if (newSub && newSub.trim() !== "") {
+                        const opt = document.createElement("option");
+                        opt.value = newSub.trim().toLowerCase().replace(/\s+/g, '-');
+                        opt.textContent = newSub.trim();
+                        opt.selected = true; // Auto-select the newly added subject
+                        attendSubject.appendChild(opt);
+                        
+                        // Save to localStorage so it appears in doubt section for students
+                        let customSubjects = JSON.parse(localStorage.getItem('campus_custom_subjects')) || [];
+                        if (!customSubjects.includes(newSub.trim())) {
+                            customSubjects.push(newSub.trim());
+                            localStorage.setItem('campus_custom_subjects', JSON.stringify(customSubjects));
+                        }
+
+                        if (typeof showToast === 'function') {
+                            showToast(`Subject '${newSub}' added successfully!`);
+                        }
+                    }
+                });
+            }
+
+            // Handle Faculty Attendance Submission
+            const facultyAttendanceForm = document.getElementById("facultyAttendanceForm");
+            if (facultyAttendanceForm) {
+                facultyAttendanceForm.addEventListener("submit", (e) => {
+                    e.preventDefault();
+                    const subject = document.getElementById("attendSubject").value;
+                    const date = document.getElementById("attendDate").value;
+                    const status = document.getElementById("attendStatus").value;
+
+                    let attendanceData = JSON.parse(localStorage.getItem("campus_attendance")) || {};
+                    // Save as YYYY-MM-DD key mapped to status.
+                    attendanceData[date] = status;
+                    localStorage.setItem("campus_attendance", JSON.stringify(attendanceData));
+
+                    if (typeof showToast === 'function') {
+                        showToast(`Attendance marked as ${status.toUpperCase()} for ${date}`);
+                    }
+                    facultyAttendanceForm.reset();
+                });
+            }
+
+            // Handle Faculty Resource Submission
+            const facultyResourceForm = document.getElementById("facultyResourceForm");
+            if (facultyResourceForm) {
+                facultyResourceForm.addEventListener("submit", (e) => {
+                    e.preventDefault();
+                    const title = document.getElementById("resTitle").value;
+                    const category = document.getElementById("resCategory").value;
+                    const link = document.getElementById("resLink").value;
+
+                    const newResource = {
+                        title: title,
+                        category: category,
+                        link: link,
+                        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                    };
+
+                    let resourcesData = JSON.parse(localStorage.getItem("campus_resources")) || [];
+                    resourcesData.unshift(newResource);
+                    localStorage.setItem("campus_resources", JSON.stringify(resourcesData));
+
+                    if (typeof showToast === 'function') {
+                        showToast(`Resource '${title}' published successfully!`);
+                    }
+                    facultyResourceForm.reset();
+                });
+            }
+        });
+
+        function renderFacultyApprovalQueue() {
+            const users = JSON.parse(localStorage.getItem("campus_users")) || [];
+            const tbody = document.getElementById("facultyApprovalTbody");
+
+            // Faculty sees only pending students
+            const pendingStudents = users.filter(u => u.role === 'student' && u.status === 'PENDING');
+
+            if (pendingStudents.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;">
+                            🎉 No pending student approval requests. All students are processed!
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = pendingStudents.map(u => `
+                <tr>
+                    <td>
+                        <strong>${u.name}</strong><br>
+                        <small style="color: var(--text-muted);">${u.email}</small>
+                    </td>
+                    <td>${u.department}</td>
+                    <td><code>${u.idCode || 'N/A'}</code></td>
+                    <td>${u.section || 'N/A'}</td>
+                    <td>${u.createdAt || 'Recent'}</td>
+                    <td><span class="status-badge pending">● PENDING</span></td>
+                    <td style="text-align: center;">
+                        <div style="display: flex; gap: 6px; justify-content: center;">
+                            <button class="btn btn-primary" style="padding: 5px 12px; font-size: 12px; background: var(--success); border-color: var(--success);" onclick="facultyApproveStudent(${u.id}, 'APPROVED')">
+                                Approve ✓
+                            </button>
+                            <button class="btn btn-secondary" style="padding: 5px 12px; font-size: 12px; color: var(--danger);" onclick="facultyApproveStudent(${u.id}, 'REJECTED')">
+                                Reject ✖
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function facultyApproveStudent(userId, newStatus) {
+            let users = JSON.parse(localStorage.getItem("campus_users")) || [];
+            const idx = users.findIndex(u => u.id === userId);
+            if (idx !== -1) {
+                users[idx].status = newStatus;
+                localStorage.setItem("campus_users", JSON.stringify(users));
+                showToast(`Student ${users[idx].name} has been ${newStatus === 'APPROVED' ? 'approved ✓' : 'rejected ✖'}`);
+                renderFacultyApprovalQueue();
+            }
+        }
+    </script>
+</body>
+</html>

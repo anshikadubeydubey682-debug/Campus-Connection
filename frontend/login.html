@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusConnect - Professional Portal Access</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="split-login-body">
+
+    <div class="split-login-container">
+        
+        <!-- Left Side: Information & Mode Selection -->
+        <div class="split-left">
+            <div class="brand-header">
+                <div class="logo-badge-container" style="display: inline-block; padding: 12px 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; margin-bottom: 24px; background: #fff; border-radius: 12px;">
+                    <img src="logo.png" alt="RKGITM Logo" class="brand-logo-img" style="height: 85px; width: auto; display: block; max-width: 100%;">
+                </div>
+                <span class="brand-subtitle" style="font-size: 13px; letter-spacing: 1px; color: #475569; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 12px;">RAJ KUMAR GOEL INSTITUTE OF TECHNOLOGY &amp; MANAGEMENT</span>
+            </div>
+
+            <h1 class="split-title">Professional Portal access for students, faculty, and admins</h1>
+            <p class="split-desc">Use one secure sign-in experience and switch your workspace role with premium mode cards. Student access stays default, while Faculty and Admin roles remain clearly separated.</p>
+
+            <div class="workspace-modes-title">WORKSPACE MODES</div>
+            
+            <div class="mode-cards-grid">
+                <!-- Student Mode -->
+                <div class="mode-card active" id="card-student" onclick="switchRole('student')">
+                    <div class="mode-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                    <h3>Student Login</h3>
+                    <p>Attendance, notices, events, and self-service tools.</p>
+                    <span class="mode-action" id="action-student">SELECTED →</span>
+                </div>
+
+                <!-- Faculty Mode -->
+                <div class="mode-card" id="card-faculty" onclick="switchRole('faculty')">
+                    <div class="mode-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                    <h3>Faculty Login</h3>
+                    <p>Manage attendance, notices, and upload resources.</p>
+                    <span class="mode-action" id="action-faculty">SWITCH ROLE →</span>
+                </div>
+
+                <!-- Admin Mode -->
+                <div class="mode-card" id="card-admin" onclick="switchRole('admin')">
+                    <div class="mode-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                    <h3>Admin Login</h3>
+                    <p>Manage system settings, compliance, and oversight.</p>
+                    <span class="mode-action" id="action-admin">SWITCH ROLE →</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: The Form -->
+        <div class="split-right">
+            
+            <div class="auth-box-header">
+                <div class="role-badge" id="roleBadgeIcon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div>
+                    <div class="current-role-label">CURRENT ROLE</div>
+                    <h2 class="auth-box-title" id="formTitle">Student Sign In</h2>
+                </div>
+            </div>
+            
+            <p class="auth-box-desc" id="formDesc">Access academic resources, view attendance, and stay updated with campus notices.</p>
+
+            <div class="role-info-banner" id="roleBanner">
+                Use Student mode for personal academic access and assignments.
+            </div>
+
+            <div class="auth-tabs" id="authTabsContainer">
+                <button type="button" class="auth-tab active" id="tabSignIn" onclick="switchAuthMode('signin')">Sign In</button>
+                <button type="button" class="auth-tab" id="tabRegister" onclick="switchAuthMode('register')">Register</button>
+            </div>
+
+            <!-- Alert Notification Box -->
+            <div id="authAlert" class="auth-alert" style="display: none;"></div>
+
+            <!-- SIGN IN FORM -->
+            <form id="loginForm" class="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginEmail" id="emailLabel">College Email</label>
+                    <input type="email" id="loginEmail" class="form-control input-light" value="student@campus.edu" placeholder="e.g. name@campus.edu" required>
+                </div>
+
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between;">
+                        <label for="loginPassword">Password</label>
+                        <a href="#" style="font-size: 13px; color: var(--primary); font-weight: 600;">Forgot password?</a>
+                    </div>
+                    <input type="password" id="loginPassword" class="form-control input-light" value="student123" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn-block-primary" id="loginSubmitBtn">Sign In as Student</button>
+                
+                <div class="workspace-note">
+                    <strong>Workspace note:</strong> Role selection only changes login context and presentation. Existing API auth, validation, and flows remain unchanged.
+                </div>
+            </form>
+
+            <!-- REGISTRATION FORM -->
+            <form id="registerForm" class="login-form" style="display: none;" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="regFullName">Full Name</label>
+                    <input type="text" id="regFullName" class="form-control input-light" placeholder="e.g. Rahul Kumar" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="regEmail">College Email Address</label>
+                    <input type="email" id="regEmail" class="form-control input-light" placeholder="e.g. rahul.cs24@campus.edu" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="regPassword">Create Password</label>
+                    <input type="password" id="regPassword" class="form-control input-light" placeholder="Minimum 6 characters" required minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label for="regDept">Department / Branch</label>
+                    <select id="regDept" class="form-control input-light" required>
+                        <option value="Computer Science">Computer Science &amp; Engineering</option>
+                        <option value="Information Technology">Information Technology</option>
+                        <option value="Electronics & Comm">Electronics &amp; Communication</option>
+                        <option value="Mechanical Engg">Mechanical Engineering</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="regIdGroup">
+                    <label for="regIdCode" id="regIdLabel">University Roll Number</label>
+                    <input type="text" id="regIdCode" class="form-control input-light" placeholder="e.g. 240027010045" required>
+                </div>
+
+                <div class="form-group" id="regSectionGroup">
+                    <label for="regSection">Year &amp; Section</label>
+                    <select id="regSection" class="form-control input-light">
+                        <option value="3rd Year (Sec A)">3rd Year (Sec A)</option>
+                        <option value="3rd Year (Sec B)">3rd Year (Sec B)</option>
+                        <option value="2nd Year (Sec A)">2nd Year (Sec A)</option>
+                        <option value="1st Year (Sec A)">1st Year (Sec A)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-block-primary" id="regSubmitBtn">Register as Student</button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Demo Hint Box (Floating) -->
+    <div class="demo-hint-floating" style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.8); color: white; padding: 15px; border-radius: 8px; font-size: 12px; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+        <strong style="color: #60a5fa;">Demo Accounts:</strong><br>
+        Student: <code>student@campus.edu</code> (pass: <code>student123</code>)<br>
+        Faculty: <code>faculty@campus.edu</code> (pass: <code>faculty123</code>)<br>
+        Admin: <code>admin@campus.edu</code> (pass: <code>admin123</code>)
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        let currentAuthMode = 'signin'; // 'signin' or 'register'
+        let currentSelectedRole = 'student'; // 'student', 'faculty', 'admin'
+
+        // Wait until DOM is loaded to setup things
+        document.addEventListener('DOMContentLoaded', () => {
+            initDefaultUsers();
+            switchRole('student'); // Ensure it starts clean on Student
+        });
+
+        function switchAuthMode(mode) {
+            currentAuthMode = mode;
+            const tabSignIn = document.getElementById('tabSignIn');
+            const tabRegister = document.getElementById('tabRegister');
+            const loginForm = document.getElementById('loginForm');
+            const regForm = document.getElementById('registerForm');
+            const alertBox = document.getElementById('authAlert');
+            const formTitle = document.getElementById('formTitle');
+            const roleName = currentSelectedRole.charAt(0).toUpperCase() + currentSelectedRole.slice(1);
+
+            alertBox.style.display = 'none';
+
+            if (mode === 'signin') {
+                tabSignIn.classList.add('active');
+                tabRegister.classList.remove('active');
+                loginForm.style.display = 'block';
+                regForm.style.display = 'none';
+                formTitle.textContent = roleName + ' Sign In';
+            } else {
+                // If user clicks Register, but is currently on Admin role, force to Student role
+                if (currentSelectedRole === 'admin') {
+                    showAuthAlert('Admins cannot self-register. Switched to Student registration.', 'info');
+                    switchRole('student');
+                }
+                
+                tabRegister.classList.add('active');
+                tabSignIn.classList.remove('active');
+                loginForm.style.display = 'none';
+                regForm.style.display = 'block';
+                
+                // Update formTitle to match the current role (either student or faculty)
+                const currentRoleName = currentSelectedRole.charAt(0).toUpperCase() + currentSelectedRole.slice(1);
+                formTitle.textContent = currentRoleName + ' Registration';
+            }
+        }
+
+        function switchRole(role) {
+            currentSelectedRole = role;
+            
+            // Cards logic
+            const cards = ['student', 'faculty', 'admin'];
+            cards.forEach(c => {
+                document.getElementById('card-' + c).classList.remove('active');
+                document.getElementById('action-' + c).textContent = 'SWITCH ROLE →';
+            });
+            document.getElementById('card-' + role).classList.add('active');
+            document.getElementById('action-' + role).textContent = 'SELECTED →';
+
+            // Form Title & Texts
+            const roleName = role.charAt(0).toUpperCase() + role.slice(1);
+            const formTitle = document.getElementById('formTitle');
+            const formDesc = document.getElementById('formDesc');
+            const roleBanner = document.getElementById('roleBanner');
+            const roleBadgeIcon = document.getElementById('roleBadgeIcon');
+            
+            // Update Title depending on SignIn vs Register
+            if (currentAuthMode === 'signin') {
+                formTitle.textContent = roleName + ' Sign In';
+            } else {
+                formTitle.textContent = roleName + ' Registration';
+            }
+            
+            document.getElementById('loginSubmitBtn').textContent = 'Sign In as ' + roleName;
+            document.getElementById('regSubmitBtn').textContent = 'Register as ' + roleName;
+
+            // Forms Fields Logic
+            const emailInput = document.getElementById('loginEmail');
+            const passInput = document.getElementById('loginPassword');
+            const emailLabel = document.getElementById('emailLabel');
+            const regIdLabel = document.getElementById('regIdLabel');
+            const regIdCode = document.getElementById('regIdCode');
+            const regSecGroup = document.getElementById('regSectionGroup');
+            const regIdGroup = document.getElementById('regIdGroup');
+            const authTabs = document.getElementById('authTabsContainer');
+
+            if (role === 'student') {
+                formDesc.textContent = "Access academic resources, view attendance, and stay updated with campus notices.";
+                roleBanner.innerHTML = "Use <strong>Student mode</strong> for personal academic access and assignments.";
+                roleBanner.style.backgroundColor = "rgba(139, 92, 246, 0.05)";
+                roleBanner.style.color = "var(--primary)";
+                roleBanner.style.borderColor = "rgba(139, 92, 246, 0.2)";
+                
+                roleBadgeIcon.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+
+                emailLabel.textContent = 'Student Email Address';
+                emailInput.value = 'student@campus.edu';
+                passInput.value = 'student123';
+                if (regIdLabel) regIdLabel.textContent = 'University Roll Number';
+                if (regIdCode) regIdCode.placeholder = 'e.g. 240027010045';
+                if (regSecGroup) regSecGroup.style.display = 'block';
+                if (regIdGroup) regIdGroup.style.display = 'block';
+                authTabs.style.display = 'flex';
+                
+            } else if (role === 'faculty') {
+                formDesc.textContent = "Manage system oversight, attendance, and upload resources.";
+                roleBanner.innerHTML = "Use <strong>Faculty mode</strong> for managing attendance and resources.";
+                roleBanner.style.backgroundColor = "rgba(16, 185, 129, 0.05)";
+                roleBanner.style.color = "var(--success)";
+                roleBanner.style.borderColor = "rgba(16, 185, 129, 0.2)";
+
+                roleBadgeIcon.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
+
+                emailLabel.textContent = 'Faculty / Teacher Email';
+                emailInput.value = 'faculty@campus.edu';
+                passInput.value = 'faculty123';
+                if (regIdLabel) regIdLabel.textContent = 'Faculty Employee ID';
+                if (regIdCode) regIdCode.placeholder = 'e.g. EMP-9921';
+                if (regSecGroup) regSecGroup.style.display = 'none';
+                if (regIdGroup) regIdGroup.style.display = 'block';
+                authTabs.style.display = 'flex';
+                
+            } else if (role === 'admin') {
+                formDesc.textContent = "Manage system oversight, policies, compliance, and organization-wide settings.";
+                roleBanner.innerHTML = "Use <strong>Admin mode</strong> for privileged oversight, policy management, and final approvals.";
+                roleBanner.style.backgroundColor = "rgba(139, 92, 246, 0.05)";
+                roleBanner.style.color = "var(--primary)";
+                roleBanner.style.borderColor = "rgba(139, 92, 246, 0.2)";
+
+                roleBadgeIcon.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
+
+                emailLabel.textContent = 'Administrator Email';
+                emailInput.value = 'admin@campus.edu';
+                passInput.value = 'admin123';
+                authTabs.style.display = 'none'; // Hide register tab for Admin
+                
+                // If user is on Register tab, force them back to Sign In
+                if (currentAuthMode === 'register') {
+                    switchAuthMode('signin');
+                }
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            try {
+                // Try backend first
+                const response = await fetch('http://localhost:8080/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('campus_jwt', data.token);
+                    
+                    // The backend should return the user details. If it doesn't, we just assume from role.
+                    // Assuming the auth response provides role, name, email. If not, fallback to UI selection
+                    localStorage.setItem('campus_user_role', data.role || currentSelectedRole);
+                    localStorage.setItem('campus_user_email', data.email || email);
+                    localStorage.setItem('campus_user_name', data.name || "User");
+                    
+                    if (data.role === 'admin' || currentSelectedRole === 'admin') window.location.href = 'admin-index.html';
+                    else if (data.role === 'faculty' || currentSelectedRole === 'faculty') window.location.href = 'faculty-index.html';
+                    else window.location.href = 'index.html';
+                    return;
+                }
+            } catch (err) {
+                console.warn("[Backend Offline] Falling back to localStorage auth");
+            }
+
+            // Fallback to local storage if backend is offline or failed
+            let users = JSON.parse(localStorage.getItem('campus_users')) || [];
+            let user = users.find(u => u.email.toLowerCase() === email && u.role === currentSelectedRole);
+
+            if (!user) {
+                showAuthAlert('Account not found! Please check email or click "Register".', 'danger');
+                return;
+            }
+
+            if (user.password !== password) {
+                showAuthAlert('Invalid password entered!', 'danger');
+                return;
+            }
+
+            if (user.status === 'PENDING') {
+                showAuthAlert(`⏳ Account Registration Pending Approval!<br><small>Your ${user.role.toUpperCase()} registration request is under review. Please check back later.</small>`, 'warning');
+                return;
+            }
+
+            if (user.status === 'REJECTED') {
+                showAuthAlert('⛔ Account Registration Declined by Administrator.', 'danger');
+                return;
+            }
+
+            // APPROVED USER LOGIN
+            localStorage.setItem('campus_user_role', user.role);
+            localStorage.setItem('campus_user_name', user.name);
+            localStorage.setItem('campus_user_dept', user.department);
+            localStorage.setItem('campus_user_email', user.email);
+
+            if (user.role === 'admin') {
+                window.location.href = 'admin-index.html';
+            } else if (user.role === 'faculty') {
+                window.location.href = 'faculty-index.html';
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('regFullName').value.trim();
+            const email = document.getElementById('regEmail').value.trim().toLowerCase();
+            const password = document.getElementById('regPassword').value.trim();
+            const dept = document.getElementById('regDept').value;
+            const code = document.getElementById('regIdCode').value.trim();
+            const section = currentSelectedRole === 'student' ? document.getElementById('regSection').value : 'N/A';
+
+            try {
+                // Try backend first
+                const response = await fetch('http://localhost:8080/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password, role: currentSelectedRole, department: dept, idCode: code, section })
+                });
+
+                if (response.ok) {
+                    document.getElementById('registerForm').reset();
+                    switchAuthMode('signin');
+                    showAuthAlert(`✅ Registration request submitted successfully!<br><small>Your ${currentSelectedRole.toUpperCase()} account is currently <strong>PENDING APPROVAL</strong>.</small>`, 'success');
+                    return;
+                }
+            } catch (err) {
+                console.warn("[Backend Offline] Falling back to localStorage registration");
+            }
+
+            // Fallback to local storage
+            let users = JSON.parse(localStorage.getItem('campus_users')) || [];
+
+            if (users.some(u => u.email.toLowerCase() === email)) {
+                showAuthAlert('An account with this email already exists!', 'danger');
+                return;
+            }
+
+            const newUser = {
+                id: Date.now(),
+                name: name,
+                email: email,
+                password: password,
+                role: currentSelectedRole,
+                status: 'PENDING',
+                department: dept,
+                idCode: code,
+                section: section,
+                createdAt: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+            };
+
+            users.push(newUser);
+            localStorage.setItem('campus_users', JSON.stringify(users));
+
+            document.getElementById('registerForm').reset();
+            switchAuthMode('signin');
+            
+            showAuthAlert(`✅ Local Registration submitted successfully!<br><small>Your ${currentSelectedRole.toUpperCase()} account is currently <strong>PENDING APPROVAL</strong>.</small>`, 'success');
+        }
+
+        function showAuthAlert(msg, type) {
+            const box = document.getElementById('authAlert');
+            box.className = `auth-alert alert-${type}`;
+            box.innerHTML = msg;
+            box.style.display = 'block';
+        }
+
+        function initDefaultUsers() {
+            let users = JSON.parse(localStorage.getItem('campus_users'));
+            if (!users || users.length === 0) {
+                users = [
+                    { id: 101, name: 'System Admin', email: 'admin@campus.edu', password: 'admin123', role: 'admin', status: 'APPROVED', department: 'IT Cell', idCode: 'ADM-001', section: 'N/A', createdAt: '01 Jan 2026' },
+                    { id: 102, name: 'Prof. Dr. Rajesh Sharma', email: 'faculty@campus.edu', password: 'faculty123', role: 'faculty', status: 'APPROVED', department: 'Computer Science', idCode: 'EMP-9921', section: 'N/A', createdAt: '05 Jan 2026' },
+                    { id: 103, name: 'Student Demo User', email: 'student@campus.edu', password: 'student123', role: 'student', status: 'APPROVED', department: 'Computer Science', idCode: '240027010045', section: '3rd Year (Sec A)', createdAt: '10 Jan 2026' },
+                    { id: 104, name: 'Amit Verma', email: 'amit.v@campus.edu', password: 'student123', role: 'student', status: 'PENDING', department: 'Computer Science', idCode: '240027010099', section: '3rd Year (Sec B)', createdAt: '12 Sept 2026' },
+                    { id: 105, name: 'Dr. Sunita Rao', email: 'sunita.rao@campus.edu', password: 'faculty123', role: 'faculty', status: 'PENDING', department: 'Electronics & Comm', idCode: 'EMP-8844', section: 'N/A', createdAt: '12 Sept 2026' }
+                ];
+                localStorage.setItem('campus_users', JSON.stringify(users));
+            }
+        }
+    </script>
+</body>
+</html>
