@@ -38,6 +38,10 @@
                     <span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
                     <span class="brand-text">User Directory</span>
                 </a>
+                <a href="#notesManagementSection">
+                    <span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
+                    <span class="brand-text">Manage Notes</span>
+                </a>
                 <a href="settings.html">
                     <span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
                     <span class="brand-text">Settings</span>
@@ -186,6 +190,50 @@
                 </div>
             </section>
 
+            <!-- NOTES MANAGEMENT SECTION -->
+            <section id="notesManagementSection" style="margin-bottom: 36px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <div>
+                        <h2>Upload Academic Notes</h2>
+                        <p style="color: var(--text-muted); font-size: 13px;">Upload notes (PDF or Image) for students by semester and subject.</p>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 24px;">
+                    <form id="uploadNotesForm" onsubmit="handleUploadNotes(event)">
+                        <div class="form-group">
+                            <label class="form-label">Note Title</label>
+                            <input type="text" id="noteTitle" class="form-control" required placeholder="e.g. Data Structures Unit 1">
+                        </div>
+                        <div class="form-group" style="margin-top: 16px;">
+                            <label class="form-label">Subject</label>
+                            <select id="noteSubject" class="form-control" required>
+                                <option value="" disabled selected>Select a semester first</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-top: 16px;">
+                            <label class="form-label">Semester</label>
+                            <select id="noteSemester" class="form-control" required onchange="fetchSubjectsForUpload(this.value)">
+                                <option value="" disabled selected>Select Semester</option>
+                                <option value="1">Semester 1</option>
+                                <option value="2">Semester 2</option>
+                                <option value="3">Semester 3</option>
+                                <option value="4">Semester 4</option>
+                                <option value="5">Semester 5</option>
+                                <option value="6">Semester 6</option>
+                                <option value="7">Semester 7</option>
+                                <option value="8">Semester 8</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-top: 16px;">
+                            <label class="form-label">Upload File (PDF/Image)</label>
+                            <input type="file" id="noteFile" class="form-control" accept=".pdf, .png, .jpg, .jpeg" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Upload Note</button>
+                    </form>
+                </div>
+            </section>
+
             <footer>
                 <p>&copy; 2026 Raj Kumar Goel Institute of Technology &amp; Management. All Rights Reserved.</p>
             </footer>
@@ -313,6 +361,73 @@
                 localStorage.setItem("campus_users", JSON.stringify(users));
                 showToast(`User ${users[userIndex].name} marked as ${newStatus}`);
                 renderAdminDashboard();
+            }
+        }
+        async function handleUploadNotes(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById("noteTitle").value;
+            const subject = document.getElementById("noteSubject").value;
+            const semester = document.getElementById("noteSemester").value;
+            const fileInput = document.getElementById("noteFile");
+            const file = fileInput.files[0];
+
+            if (!file) {
+                if (typeof showToast === 'function') showToast("Please select a file.", "error");
+                else alert("Please select a file.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("subject", subject);
+            formData.append("semester", semester);
+            formData.append("file", file);
+
+            try {
+                // Adjust port if your Spring Boot app runs on a different port
+                const response = await fetch("http://localhost:8080/api/notes/admin/upload", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (response.ok) {
+                    if (typeof showToast === 'function') showToast("Note uploaded successfully!");
+                    else alert("Note uploaded successfully!");
+                    document.getElementById("uploadNotesForm").reset();
+                } else {
+                    const errorMsg = await response.text();
+                    if (typeof showToast === 'function') showToast("Failed to upload: " + errorMsg, "error");
+                    else alert("Failed to upload: " + errorMsg);
+                }
+            } catch (error) {
+                console.error("Upload error:", error);
+                if (typeof showToast === 'function') showToast("Error connecting to server.", "error");
+                else alert("Error connecting to server.");
+            }
+        }
+
+        async function fetchSubjectsForUpload(semester) {
+            const subjectSelect = document.getElementById("noteSubject");
+            subjectSelect.innerHTML = '<option value="" disabled selected>Loading subjects...</option>';
+            try {
+                const response = await fetch(`http://localhost:8080/api/subjects/semester/${semester}`);
+                if (response.ok) {
+                    const subjects = await response.json();
+                    if (subjects.length === 0) {
+                        subjectSelect.innerHTML = '<option value="" disabled selected>No subjects added by faculty for this semester</option>';
+                    } else {
+                        subjectSelect.innerHTML = '<option value="" disabled selected>Select Subject</option>';
+                        subjects.forEach(sub => {
+                            subjectSelect.innerHTML += `<option value="${sub.name}">${sub.name}</option>`;
+                        });
+                    }
+                } else {
+                    subjectSelect.innerHTML = '<option value="" disabled selected>Error loading subjects</option>';
+                }
+            } catch (error) {
+                console.error("Error fetching subjects:", error);
+                subjectSelect.innerHTML = '<option value="" disabled selected>Error loading subjects</option>';
             }
         }
     </script>

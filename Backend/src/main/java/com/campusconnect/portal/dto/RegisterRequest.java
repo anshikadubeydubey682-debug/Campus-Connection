@@ -38,4 +38,7 @@ public class RegisterRequest {
 
     /** Year & Section for Students (optional for Faculty) */
     private String section;
+
+    /** Semester for Students (optional for Faculty) */
+    private String semester;
 }

@@ -15,6 +15,9 @@ public class Doubt {
     
     private String subject;
     
+    @Column(nullable = false)
+    private Integer semester;
+    
     @Column(columnDefinition = "TEXT")
     private String question;
     
@@ -35,6 +38,9 @@ public class Doubt {
     
     public String getSubject() { return subject; }
     public void setSubject(String subject) { this.subject = subject; }
+    
+    public Integer getSemester() { return semester; }
+    public void setSemester(Integer semester) { this.semester = semester; }
     
     public String getQuestion() { return question; }
     public void setQuestion(String question) { this.question = question; }

@@ -11,8 +11,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @RestController
 @RequestMapping("/api/attendance")
@@ -64,6 +66,17 @@ public class AttendanceController {
     @PreAuthorize("hasRole('STUDENT') or hasRole('FACULTY') or hasRole('ADMIN')")
     public ResponseEntity<List<Attendance>> getStudentAttendance(@PathVariable Long studentId) {
         List<Attendance> records = attendanceRepository.findByStudentId(studentId);
+        return ResponseEntity.ok(records);
+    }
+
+    // Get attendance for a specific student within a date range (for graph generation)
+    @GetMapping("/student/{studentId}/graph")
+    @PreAuthorize("hasRole('STUDENT') or hasRole('FACULTY') or hasRole('ADMIN')")
+    public ResponseEntity<List<Attendance>> getStudentAttendanceGraph(
+            @PathVariable Long studentId,
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        List<Attendance> records = attendanceRepository.findByStudentIdAndDateBetween(studentId, startDate, endDate);
         return ResponseEntity.ok(records);
     }
 }

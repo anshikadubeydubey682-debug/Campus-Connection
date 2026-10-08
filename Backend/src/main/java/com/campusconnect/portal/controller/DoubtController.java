@@ -36,6 +36,11 @@ public class DoubtController {
         return ResponseEntity.ok(doubtRepository.findAll());
     }
 
+    @GetMapping("/semester/{semester}")
+    public ResponseEntity<List<Doubt>> getDoubtsBySemester(@PathVariable Integer semester) {
+        return ResponseEntity.ok(doubtRepository.findBySemesterOrderByCreatedAtDesc(semester));
+    }
+
     @PostMapping
     public ResponseEntity<?> createDoubt(@RequestBody Doubt request, Principal principal) {
         User user = userRepository.findByEmail(principal.getName()).orElse(null);

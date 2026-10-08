@@ -139,7 +139,7 @@
 
             <div class="form-container">
                 <h2 style="margin-bottom: 16px;">Report a Lost or Found Item</h2>
-                <form id="lostFoundForm" onsubmit="event.preventDefault(); showToast('Item report registered successfully!'); this.reset();">
+                <form id="lostFoundForm" onsubmit="handleLostFoundSubmit(event)">
                     <div class="form-group">
                         <label for="itemStatus">Report Type</label>
                         <select id="itemStatus" class="form-control">

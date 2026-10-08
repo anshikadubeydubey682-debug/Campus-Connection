@@ -120,10 +120,10 @@
                 <div class="form-group">
                     <label for="regDept">Department / Branch</label>
                     <select id="regDept" class="form-control input-light" required>
-                        <option value="Computer Science">Computer Science &amp; Engineering</option>
-                        <option value="Information Technology">Information Technology</option>
-                        <option value="Electronics & Comm">Electronics &amp; Communication</option>
-                        <option value="Mechanical Engg">Mechanical Engineering</option>
+                        <option value="Computer Science (CSE)">Computer Science &amp; Engineering</option>
+                        <option value="Information Technology (IT)">Information Technology</option>
+                        <option value="Electronics & Comm (ECE)">Electronics &amp; Communication</option>
+                        <option value="Mechanical Engg (ME)">Mechanical Engineering</option>
                     </select>
                 </div>
 
@@ -139,6 +139,20 @@
                         <option value="3rd Year (Sec B)">3rd Year (Sec B)</option>
                         <option value="2nd Year (Sec A)">2nd Year (Sec A)</option>
                         <option value="1st Year (Sec A)">1st Year (Sec A)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="regSemesterGroup">
+                    <label for="regSemester">Current Semester</label>
+                    <select id="regSemester" class="form-control input-light">
+                        <option value="1st Sem">1st Sem</option>
+                        <option value="2nd Sem">2nd Sem</option>
+                        <option value="3rd Sem" selected>3rd Sem</option>
+                        <option value="4th Sem">4th Sem</option>
+                        <option value="5th Sem">5th Sem</option>
+                        <option value="6th Sem">6th Sem</option>
+                        <option value="7th Sem">7th Sem</option>
+                        <option value="8th Sem">8th Sem</option>
                     </select>
                 </div>
 
@@ -257,12 +271,13 @@
                 if (regIdLabel) regIdLabel.textContent = 'University Roll Number';
                 if (regIdCode) regIdCode.placeholder = 'e.g. 240027010045';
                 if (regSecGroup) regSecGroup.style.display = 'block';
+                document.getElementById('regSemesterGroup').style.display = 'block';
                 if (regIdGroup) regIdGroup.style.display = 'block';
                 authTabs.style.display = 'flex';
                 
             } else if (role === 'faculty') {
-                formDesc.textContent = "Manage system oversight, attendance, and upload resources.";
-                roleBanner.innerHTML = "Use <strong>Faculty mode</strong> for managing attendance and resources.";
+                formDesc.textContent = "Manage classes, update student attendance, and upload learning resources.";
+                roleBanner.innerHTML = "Use <strong>Faculty mode</strong> to manage your assigned subjects and students.";
                 roleBanner.style.backgroundColor = "rgba(16, 185, 129, 0.05)";
                 roleBanner.style.color = "var(--success)";
                 roleBanner.style.borderColor = "rgba(16, 185, 129, 0.2)";
@@ -272,8 +287,8 @@
                 emailLabel.textContent = 'Faculty / Teacher Email';
                 emailInput.value = 'faculty@campus.edu';
                 passInput.value = 'faculty123';
-                if (regIdLabel) regIdLabel.textContent = 'Faculty Employee ID';
-                if (regIdCode) regIdCode.placeholder = 'e.g. EMP-9921';
+                if (regIdLabel) regIdLabel.textContent = 'Faculty ID Code';
+                if (regIdCode) regIdCode.placeholder = 'e.g. FAC-2041';
                 if (regSecGroup) regSecGroup.style.display = 'none';
                 if (regIdGroup) regIdGroup.style.display = 'block';
                 authTabs.style.display = 'flex';
@@ -360,6 +375,7 @@
             localStorage.setItem('campus_user_name', user.name);
             localStorage.setItem('campus_user_dept', user.department);
             localStorage.setItem('campus_user_email', user.email);
+            localStorage.setItem('campus_user_semester', user.semester || "3rd Sem");
 
             if (user.role === 'admin') {
                 window.location.href = 'admin-index.html';
@@ -378,13 +394,14 @@
             const dept = document.getElementById('regDept').value;
             const code = document.getElementById('regIdCode').value.trim();
             const section = currentSelectedRole === 'student' ? document.getElementById('regSection').value : 'N/A';
+            const semester = currentSelectedRole === 'student' ? document.getElementById('regSemester').value : 'N/A';
 
             try {
                 // Try backend first
                 const response = await fetch('http://localhost:8080/api/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, password, role: currentSelectedRole, department: dept, idCode: code, section })
+                    body: JSON.stringify({ name, email, password, role: currentSelectedRole, department: dept, idCode: code, section, semester })
                 });
 
                 if (response.ok) {
@@ -415,6 +432,7 @@
                 department: dept,
                 idCode: code,
                 section: section,
+                semester: semester,
                 createdAt: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
             };
 

@@ -60,6 +60,12 @@ public class User implements UserDetails {
      */
     @Column
     private String section;
+    
+    /**
+     * Semester (e.g. "1st Sem", "3rd Sem") for Students, N/A for Faculty
+     */
+    @Column
+    private String semester;
 
     /**
      * Admin/Faculty who approved this account (nullable until approved)

@@ -26,15 +26,15 @@
             <p class="sidebar-title">FACULTY PORTAL</p>
 
             <nav class="sidebar-nav">
-                <a href="faculty-index.html" class="active">
+                <a href="faculty-index.html">
                     <span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span>
                     <span class="brand-text">Faculty Dashboard</span>
                 </a>
-                <a href="#noticeSection">
+                <a href="faculty-index.html#noticeSection">
                     <span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
                     <span class="brand-text">Publish Notices</span>
                 </a>
-                <a href="faculty-attendance.html">
+                <a href="faculty-attendance.html" class="active">
                     <span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
                     <span class="brand-text">Mark Attendance</span>
                 </a>
@@ -45,11 +45,6 @@
                 <a href="#complaintsSection">
                     <span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
                     <span class="brand-text">Resolve Grievances</span>
-                </a>
-
-                <a href="#manageSubjectsSection">
-                    <span class="nav-icon"><svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
-                    <span class="brand-text">Manage Subjects</span>
                 </a>
 
                 <div class="nav-divider"></div>
@@ -100,193 +95,97 @@
                 </div>
             </header>
 
-            <!-- Faculty Welcome Banner -->
-            <section class="dashboard-welcome" style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);">
-                <p class="small-text" style="color: rgba(255, 255, 255, 0.9);">RKGITM FACULTY CONTROL PANEL</p>
-                <h2>Welcome, Professor Sharma</h2>
-                <p>Manage student attendance, publish department notices, upload lecture materials, and resolve student grievances.</p>
+            <!-- Faculty Attendance Header -->
+            <section class="dashboard-welcome" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 30px; border-radius: 12px; margin-bottom: 24px;">
+                <p class="small-text" style="color: rgba(255, 255, 255, 0.9);">ATTENDANCE MANAGEMENT</p>
+                <h2 style="color: white; margin: 8px 0;">Mark Daily Attendance</h2>
+                <p style="color: rgba(255, 255, 255, 0.9);">Select your class details below to generate the student roster and mark attendance for today's lecture.</p>
             </section>
 
-            <!-- Overview Metrics -->
-            <section class="summary-cards">
-                <div class="summary-card">
-                    <p>Total Enrolled Students</p>
-                    <h2 style="color: var(--primary);">120</h2>
-                    <small>B.Tech CS 3rd Year (Sec A &amp; B)</small>
-                </div>
-
-                <div class="summary-card">
-                    <p>Published Notices</p>
-                    <h2>04</h2>
-                    <small>Active on student feed</small>
-                </div>
-
-                <div class="summary-card">
-                    <p>Pending Grievances</p>
-                    <h2 style="color: var(--warning);">02</h2>
-                    <small>Requires faculty review</small>
-                </div>
-
-                <div class="summary-card">
-                    <p>Uploaded Resources</p>
-                    <h2 style="color: var(--success);">12</h2>
-                    <small>Notes &amp; past question papers</small>
-                </div>
-            </section>
-
-            <!-- Grid Controls: Publish Notice & Mark Attendance -->
-            <div class="dashboard-grid">
-                <!-- Publish Notice Panel -->
-                <div class="form-container" id="noticeSection" style="margin: 0; max-width: none;">
-                    <h2>Publish New Notice for Students</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 20px;">This notice will immediately appear on the student dashboard.</p>
-
-                    <form onsubmit="event.preventDefault(); showToast('Notice published to student portal!'); this.reset();">
+            <!-- Attendance Filters -->
+            <div class="dashboard-box" style="margin-bottom: 24px;">
+                <form id="facultyRosterForm" onsubmit="event.preventDefault(); renderFacultyRoster();">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
                         <div class="form-group">
-                            <label for="fNoticeCategory">Notice Category</label>
-                            <select id="fNoticeCategory" class="form-control">
-                                <option value="academic">Academic Announcement</option>
-                                <option value="exam">Examination Alert</option>
-                                <option value="general">General Notice</option>
+                            <label for="rosterDept">Department</label>
+                            <select id="rosterDept" class="form-control" required>
+                                <option value="Computer Science (CSE)">Computer Science (CSE)</option>
+                                <option value="Information Technology (IT)">Information Technology (IT)</option>
+                                <option value="Electronics (ECE)">Electronics & Comm. (ECE)</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="fNoticeTitle">Notice Title</label>
-                            <input type="text" id="fNoticeTitle" class="form-control" placeholder="e.g. Sessional Exam Guidelines" required>
+                            <label for="rosterSem">Semester</label>
+                            <select id="rosterSem" class="form-control" required onchange="updateSubjects()">
+                                <option value="1st Sem">1st Semester</option>
+                                <option value="2nd Sem">2nd Semester</option>
+                                <option value="3rd Sem">3rd Semester</option>
+                                <option value="4th Sem">4th Semester</option>
+                                <option value="5th Sem">5th Semester</option>
+                                <option value="6th Sem">6th Semester</option>
+                                <option value="7th Sem">7th Semester</option>
+                                <option value="8th Sem">8th Semester</option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="fNoticeContent">Notice Content</label>
-                            <textarea id="fNoticeContent" class="form-control" placeholder="Write the full announcement..." required></textarea>
+                            <label for="rosterSec">Section</label>
+                            <select id="rosterSec" class="form-control" required>
+                                <option value="A">Section A</option>
+                                <option value="B">Section B</option>
+                                <option value="C">Section C</option>
+                            </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">Publish Announcement →</button>
-                    </form>
-                </div>
-
-                <!-- Mark Attendance Panel -->
-                <div class="dashboard-box" id="attendanceSection" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px;">
-                    <div style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.1); color: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15L11 17L15 13"/></svg>
+                        <div class="form-group">
+                            <label for="rosterSub">Subject</label>
+                            <select id="rosterSub" class="form-control" required>
+                                <!-- Populated dynamically by updateSubjects() -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="rosterDate">Lecture Date</label>
+                            <input type="date" id="rosterDate" class="form-control" required>
+                        </div>
                     </div>
-                    <h2 style="margin-bottom: 12px;">Daily Student Attendance</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 24px;">Take attendance for individual students, mark them present or absent, and generate daily reports.</p>
-                    <a href="faculty-attendance.html" class="btn btn-primary" style="width: 100%; max-width: 250px;">Take Today's Attendance →</a>
-                </div>
+                    <div style="margin-top: 16px; text-align: right;">
+                        <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Fetch Student Roster →</button>
+                    </div>
+                </form>
             </div>
 
-            <!-- Upload Resources & Resolve Grievances -->
-            <div class="dashboard-grid">
-                <!-- Upload Materials -->
-                <div class="form-container" id="resourcesSection" style="margin: 0; max-width: none;">
-                    <h2>Upload Study Material / PDF</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 20px;">Upload lecture slides, notes, or sample papers for students.</p>
-
-                    <form id="facultyResourceForm">
-                        <div class="form-group">
-                            <label for="resTitle">Resource Title</label>
-                            <input type="text" id="resTitle" class="form-control" placeholder="e.g. Unit 3 Java Multithreading Notes" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="resCategory">Type</label>
-                            <select id="resCategory" class="form-control">
-                                <option value="video">YouTube Video Lecture</option>
-                                <option value="notes">Lecture Notes (PDF)</option>
-                                <option value="papers">Past Question Paper</option>
-                                <option value="books">E-Book Reference</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="resLink">YouTube Link / URL</label>
-                            <input type="url" id="resLink" class="form-control" placeholder="https://www.youtube.com/watch?v=..." required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Publish Resource</button>
-                    </form>
-                </div>
-
-                <!-- Resolve Grievances Panel -->
-                <div class="dashboard-box" id="complaintsSection">
-                    <div class="box-heading">
-                        <h2>Pending Student Complaints</h2>
-                    </div>
-
-                    <div class="notices-grid">
-                        <div class="notice-card">
-                            <div class="notice-header">
-                                <span class="badge badge-warning">UNDER REVIEW</span>
-                                <span class="notice-date">04 Sept 2026</span>
-                            </div>
-                            <h3>CS Lab 3 Monitor Flicker Issue</h3>
-                            <p><strong>Student:</strong> Rahul Kumar (Sec A)</p>
-                            <p style="font-size: 13px; color: var(--text-secondary);">Monitors on row B suffer from screen flickering during lab sessions.</p>
-                            <button class="btn btn-primary" style="margin-top: 12px; padding: 6px 14px; font-size: 12.5px;" onclick="this.parentElement.querySelector('.badge').className='badge badge-success'; this.parentElement.querySelector('.badge').textContent='RESOLVED'; showToast('Complaint marked as Resolved!');">Mark Resolved ✓</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Manage Subjects Panel -->
-            <section id="manageSubjectsSection" style="margin-bottom: 36px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <div>
-                        <h2>Manage Semester Subjects</h2>
-                        <p style="color: var(--text-muted); font-size: 13px;">Add subjects for each semester. These subjects will be available for students in Doubts and Notes.</p>
-                    </div>
-                </div>
-
-                <div class="card" style="padding: 24px;">
-                    <form id="addSubjectForm" onsubmit="handleAddSubject(event)">
-                        <div class="form-group">
-                            <label class="form-label">Semester</label>
-                            <select id="subSemester" class="form-control" required>
-                                <option value="" disabled selected>Select Semester</option>
-                                <option value="1">Semester 1</option>
-                                <option value="2">Semester 2</option>
-                                <option value="3">Semester 3</option>
-                                <option value="4">Semester 4</option>
-                                <option value="5">Semester 5</option>
-                                <option value="6">Semester 6</option>
-                                <option value="7">Semester 7</option>
-                                <option value="8">Semester 8</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="margin-top: 16px;">
-                            <label class="form-label">Subject Name</label>
-                            <input type="text" id="subName" class="form-control" required placeholder="e.g. Data Structures">
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Add Subject</button>
-                    </form>
-                </div>
-            </section>
-
-            <!-- Student Approval Queue Section -->
-            <section id="studentApprovalSection" style="margin-bottom: 36px;">
+            <!-- Student Roster Section (Hidden by default until fetched) -->
+            <section id="rosterSection" style="display: none; margin-bottom: 36px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
                     <div>
-                        <h2>Pending Student Registration Requests</h2>
-                        <p style="color: var(--text-muted); font-size: 13px;">Review and approve Student registrations from your department before they can access the portal.</p>
+                        <h2 id="rosterTitle">Student Roster</h2>
+                        <p style="color: var(--text-muted); font-size: 13px;" id="rosterSubtitle">Marking attendance for 0 students</p>
                     </div>
-                    <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;" onclick="renderFacultyApprovalQueue()">
-                        <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.07"/></svg>
-                        Refresh Queue
-                    </button>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;" onclick="markAll('present')">
+                            Mark All Present
+                        </button>
+                    </div>
                 </div>
 
-                <div class="admin-table-wrapper">
+                <div class="admin-table-wrapper" style="margin-bottom: 20px;">
                     <table class="admin-table">
                         <thead>
                             <tr>
-                                <th>Student Name &amp; Email</th>
-                                <th>Department</th>
+                                <th style="width: 50px; text-align: center;">S.No</th>
+                                <th>Student Name</th>
                                 <th>Roll Number</th>
-                                <th>Section</th>
-                                <th>Submitted</th>
-                                <th>Status</th>
-                                <th style="text-align: center;">Action</th>
+                                <th style="text-align: center; width: 250px;">Attendance Status</th>
                             </tr>
                         </thead>
-                        <tbody id="facultyApprovalTbody">
+                        <tbody id="rosterTbody">
+                            <!-- Populated dynamically -->
                         </tbody>
                     </table>
+                </div>
+                
+                <div style="text-align: right;">
+                    <button class="btn btn-primary" style="padding: 12px 32px; font-size: 16px;" onclick="submitFacultyAttendance()">
+                        Submit Final Attendance
+                    </button>
                 </div>
             </section>
 
@@ -384,7 +283,39 @@
                     facultyResourceForm.reset();
                 });
             }
+
+            // Initialize subjects on load
+            if (document.getElementById("rosterSem")) {
+                updateSubjects();
+            }
         });
+
+        function updateSubjects() {
+            const sem = document.getElementById("rosterSem").value;
+            const subSelect = document.getElementById("rosterSub");
+            if (!subSelect) return;
+
+            const subjectsMap = {
+                "1st Sem": ["Mathematics I", "Physics", "Basic Electrical Engg", "Engineering Graphics"],
+                "2nd Sem": ["Mathematics II", "Chemistry", "Programming for Problem Solving", "English"],
+                "3rd Sem": ["Data Structures", "Computer Organization", "Discrete Structures", "Logic Design"],
+                "4th Sem": ["Operating Systems", "Theory of Automata", "Microprocessors", "Database Management"],
+                "5th Sem": ["Java Programming", "Design & Analysis of Algorithms", "Web Technology", "Compiler Design"],
+                "6th Sem": ["Computer Networks", "Software Engineering", "Artificial Intelligence", "Machine Learning"],
+                "7th Sem": ["Cloud Computing", "Cryptography", "Mobile Computing", "Data Science"],
+                "8th Sem": ["Distributed Systems", "Internet of Things", "Big Data Analytics", "Deep Learning"]
+            };
+
+            const subjects = subjectsMap[sem] || [];
+            subSelect.innerHTML = "";
+            subjects.forEach(sub => {
+                const opt = document.createElement("option");
+                opt.value = sub;
+                opt.textContent = sub;
+                subSelect.appendChild(opt);
+            });
+        }
+
 
         function renderFacultyApprovalQueue() {
             const users = JSON.parse(localStorage.getItem("campus_users")) || [];
@@ -437,38 +368,6 @@
                 localStorage.setItem("campus_users", JSON.stringify(users));
                 showToast(`Student ${users[idx].name} has been ${newStatus === 'APPROVED' ? 'approved ✓' : 'rejected ✖'}`);
                 renderFacultyApprovalQueue();
-            }
-        }
-        async function handleAddSubject(event) {
-            event.preventDefault();
-            const semester = document.getElementById("subSemester").value;
-            const name = document.getElementById("subName").value;
-
-            if (!semester || !name) return;
-
-            const formData = new FormData();
-            formData.append("semester", semester);
-            formData.append("name", name);
-
-            try {
-                const response = await fetch("http://localhost:8080/api/subjects/admin/add", {
-                    method: "POST",
-                    body: formData
-                });
-
-                if (response.ok) {
-                    if (typeof showToast === 'function') showToast(`Subject '${name}' added for Semester ${semester}!`);
-                    else alert(`Subject '${name}' added for Semester ${semester}!`);
-                    document.getElementById("addSubjectForm").reset();
-                } else {
-                    const errorMsg = await response.text();
-                    if (typeof showToast === 'function') showToast("Failed to add: " + errorMsg, "error");
-                    else alert("Failed to add: " + errorMsg);
-                }
-            } catch (error) {
-                console.error("Add subject error:", error);
-                if (typeof showToast === 'function') showToast("Error connecting to server.", "error");
-                else alert("Error connecting to server.");
             }
         }
     </script>

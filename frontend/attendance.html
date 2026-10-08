@@ -92,6 +92,44 @@
                 </div>
             </div>
 
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <select class="form-control" style="width: auto; padding: 6px 16px; border-radius: 20px; font-size: 14px; background-color: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary); cursor: pointer; font-weight: 600;" id="graphDateRange">
+                    <option>September 2026</option>
+                </select>
+                <button class="btn btn-secondary" style="border-radius: 20px; padding: 6px 16px; background-color: var(--bg-surface); color: var(--text-primary); border: 1px solid var(--border-color); font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Export
+                </button>
+            </div>
+
+            <div class="dashboard-box" style="margin-bottom: 28px; padding: 24px;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
+                    <h2 style="font-size: 18px; margin: 0;">Attendance Performance</h2>
+                    <span style="color: var(--text-muted); font-size: 16px; cursor: help;" title="View your attendance trends over time">ℹ️</span>
+                </div>
+                
+                <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+                    <select class="form-control" style="width: auto; border-radius: 20px; padding: 6px 16px; font-size: 13.5px; background-color: var(--bg-surface); border: 1px solid var(--border-color); cursor: pointer; font-weight: 500;"><option>Classes Attended</option></select>
+                    <select class="form-control" style="width: auto; border-radius: 20px; padding: 6px 16px; font-size: 13.5px; background-color: var(--bg-surface); border: 1px solid var(--border-color); cursor: pointer; font-weight: 500;"><option>Cumulative</option></select>
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <div style="display: flex; align-items: baseline; gap: 8px;">
+                        <span style="font-size: 38px; font-weight: 800; color: var(--text-primary);" id="totalImpressionsText">0</span>
+                        <span style="font-size: 15px; color: var(--text-muted); font-weight: 500;">Total Classes</span>
+                    </div>
+                    <div style="font-size: 13px; margin-top: 2px; display: flex; align-items: center; gap: 6px;">
+                        <span style="color: var(--success); font-weight: 700;" id="attendanceTrend">▲ 12%</span>
+                        <span style="color: var(--text-muted);">vs. last month</span>
+                    </div>
+                </div>
+
+                <!-- Attendance Graph Canvas -->
+                <div style="position: relative; height: 300px; width: 100%;">
+                    <canvas id="attendanceChart"></canvas>
+                </div>
+            </div>
+
             <div class="attendance-layout">
                 <div class="calendar-card">
                     <div class="calendar-header" style="display: flex; justify-content: space-between; align-items: center;">
@@ -109,14 +147,6 @@
                 </div>
 
                 <div class="dashboard-box">
-                    <div class="box-heading">
-                        <h2>Attendance Overview</h2>
-                    </div>
-                    <!-- Attendance Graph Canvas -->
-                    <div style="position: relative; height: 250px; width: 100%; margin-bottom: 24px;">
-                        <canvas id="attendanceChart"></canvas>
-                    </div>
-
                     <div class="box-heading">
                         <h2>Subject Breakdown</h2>
                     </div>

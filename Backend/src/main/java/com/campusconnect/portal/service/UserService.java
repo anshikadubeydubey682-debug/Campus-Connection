@@ -50,6 +50,7 @@ public class UserService {
                 .department(request.getDepartment())
                 .idCode(request.getIdCode())
                 .section(request.getSection())
+                .semester(request.getSemester())
                 // Admin accounts are auto-approved in PrePersist, others are PENDING
                 .status(request.getRole() == Role.ADMIN ? AccountStatus.APPROVED : AccountStatus.PENDING)
                 .build();

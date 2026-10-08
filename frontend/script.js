@@ -54,13 +54,13 @@ document.addEventListener("DOMContentLoaded", () => {
     initTheme();
     initSidebar();
     initProfileMenu();
+    loadProfileData(); // Move this before initForms so defaults are set correctly!
     initNoticeSearch();
     initCategoryFilters();
     initEventRSVP();
     initForms();
     initAttendance();
     initResources();
-    loadProfileData();
 });
 
 const aktuSyllabus = {
@@ -318,120 +318,7 @@ function initForms() {
         });
     }
 
-    const doubtForm = document.getElementById("doubtForm");
-    const doubtSubjectSelect = document.getElementById("doubtSubject");
-    if (doubtSubjectSelect) {
-        // Populate all subjects across all semesters for CSE as an example
-        doubtSubjectSelect.innerHTML = "";
-        Object.values(aktuSyllabus["Computer Science (CSE)"]).forEach(subjects => {
-            subjects.forEach(sub => {
-                const opt = document.createElement("option");
-                opt.value = sub.toLowerCase().replace(/\s+/g, '-');
-                opt.textContent = sub;
-                doubtSubjectSelect.appendChild(opt);
-            });
-        });
-        
-        let customSubjects = JSON.parse(localStorage.getItem('campus_custom_subjects')) || [];
-        customSubjects.forEach(sub => {
-            const opt = document.createElement("option");
-            opt.value = sub.toLowerCase().replace(/\s+/g, '-');
-            opt.textContent = sub;
-            doubtSubjectSelect.appendChild(opt);
-        });
-    }
 
-    if (doubtForm) {
-        doubtForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const subject = document.getElementById("doubtSubject").value;
-            const question = document.getElementById("doubtQuestion").value;
-
-            const doubtFeed = document.getElementById("doubtFeed");
-            if (doubtFeed) {
-                const newDoubt = document.createElement("div");
-                newDoubt.className = "doubt-card";
-                newDoubt.innerHTML = `
-                    <div class="notice-header">
-                        <span class="notice-tag">${subject}</span>
-                        <span class="notice-date">Posted Just Now</span>
-                    </div>
-                    <h3>${question}</h3>
-                    
-                    <div id="${aiContainerId}" style="margin-top: 15px; padding: 12px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                            <span class="badge badge-warning">⏳ AI Generating Solution...</span>
-                        </div>
-                        <p style="font-size: 13px; color: var(--text-muted);">Please wait while AI analyzes your question...</p>
-                    </div>
-
-                    <div class="student-replies-list" style="margin-top: 15px;"></div>
-
-                    <div style="margin-top: 15px; display: flex; align-items: center; justify-content: space-between;">
-                        <small class="reply-count" style="color: var(--success); font-weight: 700;">0 Student Replies</small>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-primary btn-sm reply-btn" style="padding: 6px 12px; font-size: 12.5px;">Solve / Reply</button>
-                            <button class="btn btn-secondary btn-sm edit-doubt-btn" style="padding: 6px 12px; font-size: 12.5px;">Edit</button>
-                            <button class="btn btn-secondary btn-sm delete-doubt-btn" style="padding: 6px 12px; font-size: 12.5px; color: var(--danger); border-color: var(--danger);">Delete</button>
-                        </div>
-                    </div>
-                `;
-                doubtFeed.prepend(newDoubt);
-
-                // Attach delete/edit event listeners
-                newDoubt.querySelector('.delete-doubt-btn').addEventListener('click', () => {
-                    if (confirm("Are you sure you want to delete this doubt?")) {
-                        newDoubt.remove();
-                        showToast("Doubt deleted successfully");
-                    }
-                });
-                newDoubt.querySelector(".reply-btn").addEventListener("click", (e) => {
-                    const replyModal = document.getElementById("replyModal");
-                    if (replyModal) replyModal.style.display = "flex";
-                    // For dynamically created doubts, set the global target for the reply
-                    if (typeof currentReplyTarget !== 'undefined') {
-                        currentReplyTarget = e.target.closest('.doubt-card').querySelector('.student-replies-list');
-                    } else {
-                        window.currentReplyTarget = e.target.closest('.doubt-card').querySelector('.student-replies-list');
-                    }
-                });
-                newDoubt.querySelector('.edit-doubt-btn').addEventListener('click', () => {
-                    const newQuestion = prompt("Edit your doubt:", question);
-                    if (newQuestion) {
-                        newDoubt.querySelector('h3').textContent = newQuestion;
-                        showToast("Doubt updated");
-                    }
-                });
-                
-                // Simulate AI generating a solution after 3.5 seconds
-                setTimeout(() => {
-                    const aiContainer = document.getElementById(aiContainerId);
-                    if (aiContainer) {
-                        aiContainer.innerHTML = `
-                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                <span class="badge badge-info">🤖 AI Solution</span>
-                                <small style="color: var(--text-muted);">Generated instantly</small>
-                            </div>
-                            <p style="font-size: 13px; margin-bottom: 10px;">This is an AI-generated explanation based on your query. (Mocked response)</p>
-                            <div style="position: relative; height: 200px; border-radius: 8px; overflow: hidden; margin-top: 10px;">
-                                <video width="100%" height="100%" controls style="object-fit: cover; background: #000;">
-                                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                                    Your browser does not support HTML video.
-                                </video>
-                            </div>
-                        `;
-                        showToast("AI has solved your doubt!");
-                    }
-                }, 3500);
-                
-                // Re-bind reply buttons
-                initReplyModals();
-            }
-
-            doubtForm.reset();
-            showToast("Doubt posted");
-        });
-    }
 
     const settingsForm = document.getElementById("settingsForm");
     if (settingsForm) {
@@ -439,18 +326,6 @@ function initForms() {
             e.preventDefault();
             
             const sem = document.getElementById("settingSemester").value;
-            const checkedSubjects = Array.from(document.querySelectorAll('.subject-checkbox:checked')).map(cb => cb.value);
-            
-            // Validation rules
-            let minRequired = 0;
-            if (sem === "1st Sem" || sem === "2nd Sem") minRequired = 5;
-            else if (["3rd Sem", "4th Sem", "5th Sem", "6th Sem"].includes(sem)) minRequired = 6;
-            else if (sem === "7th Sem" || sem === "8th Sem") minRequired = 3;
-
-            if (checkedSubjects.length < minRequired) {
-                showToast(`Error: ${sem} requires a minimum of ${minRequired} subjects.`);
-                return;
-            }
 
             const newProfile = {
                 name: document.getElementById("settingName").value,
@@ -459,113 +334,19 @@ function initForms() {
                 course: document.getElementById("settingBranch").value,
                 year: document.getElementById("settingYear").value,
                 semester: document.getElementById("settingSemester").value,
-                section: document.getElementById("settingSection").value,
-                selectedSubjects: checkedSubjects
+                section: document.getElementById("settingSection").value
             };
 
             localStorage.setItem("campus_profile", JSON.stringify(newProfile));
             loadProfileData();
-            showToast("Profile and Subjects saved!");
+            showToast("Profile saved successfully!");
         });
-        
-        // Initialize dynamic subjects mapping
-        initDynamicSubjects();
     }
 
     initReplyModals();
 }
 
-function initDynamicSubjects() {
-    const branchSelect = document.getElementById("settingBranch");
-    const semSelect = document.getElementById("settingSemester");
-    const container = document.getElementById("subjectCheckboxContainer");
-    const helpText = document.getElementById("subjectSelectionHelp");
-    const customInput = document.getElementById("customSubjectInput");
-    const addCustomBtn = document.getElementById("addCustomSubjectBtn");
-    
-    if (!branchSelect || !semSelect || !container) return;
 
-    const createCheckbox = (val, isChecked = false) => {
-        const div = document.createElement("div");
-        div.style.display = "flex";
-        div.style.alignItems = "center";
-        div.style.gap = "8px";
-        
-        const cb = document.createElement("input");
-        cb.type = "checkbox";
-        cb.className = "subject-checkbox";
-        cb.value = val;
-        cb.checked = isChecked;
-        cb.style.width = "16px";
-        cb.style.height = "16px";
-        cb.style.accentColor = "var(--primary)";
-        
-        const lbl = document.createElement("label");
-        lbl.textContent = val;
-        lbl.style.cursor = "pointer";
-        lbl.onclick = () => { cb.checked = !cb.checked; };
-        
-        div.appendChild(cb);
-        div.appendChild(lbl);
-        return div;
-    };
-
-    const updateSubjects = () => {
-        const branch = branchSelect.value;
-        const sem = semSelect.value;
-        
-        let minRequired = 0;
-        if (sem === "1st Sem" || sem === "2nd Sem") minRequired = 5;
-        else if (["3rd Sem", "4th Sem", "5th Sem", "6th Sem"].includes(sem)) minRequired = 6;
-        else if (sem === "7th Sem" || sem === "8th Sem") minRequired = 3;
-        
-        helpText.textContent = `Minimum required subjects for ${sem}: ${minRequired}`;
-        
-        container.innerHTML = "";
-        
-        // Load saved subjects if available and matching current sem/branch to avoid wiping out user selections
-        const savedProfile = JSON.parse(localStorage.getItem("campus_profile"));
-        let savedSubjects = [];
-        if (savedProfile && savedProfile.semester === sem && savedProfile.course === branch && savedProfile.selectedSubjects) {
-            savedSubjects = savedProfile.selectedSubjects;
-        }
-        
-        const defaultSubjects = (aktuSyllabus[branch] && aktuSyllabus[branch][sem]) ? aktuSyllabus[branch][sem] : [];
-        
-        // Merge default and saved subjects (to include custom ones)
-        const allSubjectsToRender = [...new Set([...defaultSubjects, ...savedSubjects])];
-
-        if (allSubjectsToRender.length > 0) {
-            allSubjectsToRender.forEach(sub => {
-                // Check it if it was saved, otherwise leave unchecked (or default to checked if no saved profile exists yet)
-                const isChecked = savedSubjects.length > 0 ? savedSubjects.includes(sub) : false;
-                container.appendChild(createCheckbox(sub, isChecked));
-            });
-        } else {
-            container.innerHTML = "<div style='color: var(--text-muted); padding: 4px 0;'>No default subjects found. Please add custom subjects.</div>";
-        }
-    };
-
-    if (addCustomBtn && customInput) {
-        addCustomBtn.addEventListener("click", () => {
-            const val = customInput.value.trim();
-            if (val) {
-                // Remove the "No default subjects" message if it exists
-                if (container.querySelector("div[style*='color: var(--text-muted)']")) {
-                    container.innerHTML = "";
-                }
-                container.appendChild(createCheckbox(val, true));
-                customInput.value = "";
-            }
-        });
-    }
-
-    branchSelect.addEventListener("change", updateSubjects);
-    semSelect.addEventListener("change", updateSubjects);
-    
-    // Initial update
-    updateSubjects();
-}
 
 function initReplyModals() {
     const replyBtns = document.querySelectorAll(".reply-btn");
@@ -684,13 +465,121 @@ function initAttendance() {
         
         let attendanceData = JSON.parse(localStorage.getItem("campus_attendance")) || {};
         
+        let userDept = localStorage.getItem('campus_user_dept') || "Computer Science (CSE)";
+        // Backwards compatibility for older user sessions
+        if (userDept === "Computer Science") userDept = "Computer Science (CSE)";
+        if (userDept === "Information Technology") userDept = "Information Technology (IT)";
+        if (userDept === "Electronics & Comm") userDept = "Electronics (ECE)";
+        if (userDept === "Mechanical Engg") userDept = "Mechanical (ME)";
+        
+        let userSem = localStorage.getItem('campus_user_semester') || "3rd Sem";
+        
+        let subjectsList = ["Java Programming", "Database Management", "Data Structures", "Web Development"]; // Fallback
+        const savedProfile = JSON.parse(localStorage.getItem('campus_profile'));
+        
+        if (savedProfile && savedProfile.selectedSubjects && savedProfile.selectedSubjects.length > 0) {
+            subjectsList = savedProfile.selectedSubjects;
+        } else if (typeof aktuSyllabus !== 'undefined' && aktuSyllabus[userDept] && aktuSyllabus[userDept][userSem]) {
+            subjectsList = aktuSyllabus[userDept][userSem];
+        }
+        
+        // Upgrade old data format if needed
+        if (Object.keys(attendanceData).length > 0) {
+            const firstKey = Object.keys(attendanceData)[0];
+            if (typeof attendanceData[firstKey] === 'string') {
+                attendanceData = {}; // reset to generate new format
+            }
+        }
+        
+        // --- ADD MOCK DATA FOR WORKING FUNCTIONALITY DEMO ---
+        const monthPrefix = `${year}-${String(month + 1).padStart(2, '0')}-`;
+        let hasDataForThisMonth = Object.keys(attendanceData).some(key => key.startsWith(monthPrefix));
+        
+        // Check if existing data matches current subjects list
+        if (hasDataForThisMonth) {
+            const sampleKey = Object.keys(attendanceData).find(key => key.startsWith(monthPrefix));
+            const existingSubjects = Object.keys(attendanceData[sampleKey].subjects || {});
+            
+            // If the subjects in the stored data don't perfectly match the current subjectsList, we need to regenerate
+            const subjectsMatch = existingSubjects.length === subjectsList.length && 
+                                existingSubjects.every(sub => subjectsList.includes(sub));
+            
+            if (!subjectsMatch) {
+                // Delete all records for this month so they are regenerated with new subjects
+                Object.keys(attendanceData).forEach(key => {
+                    if (key.startsWith(monthPrefix)) {
+                        delete attendanceData[key];
+                    }
+                });
+                hasDataForThisMonth = false;
+            }
+        }
+        
+        if (!hasDataForThisMonth && !monthIsFuture) {
+            const daysInTargetMonth = new Date(year, month + 1, 0).getDate();
+            const maxDays = (year === today.getFullYear() && month === today.getMonth()) ? today.getDate() : daysInTargetMonth;
+            
+            for (let d = 1; d <= maxDays; d++) {
+                const dateObj = new Date(year, month, d);
+                if (dateObj.getDay() !== 0 && dateObj.getDay() !== 6) { // Weekdays only
+                    const rand = Math.random();
+                    let overallStatus = 'present';
+                    if (rand > 0.85) overallStatus = 'absent';
+                    else if (rand > 0.75) overallStatus = 'late';
+                    
+                    const subData = {};
+                    subjectsList.forEach(sub => {
+                        let sStat = overallStatus;
+                        // Add randomness to individual subjects
+                        if (overallStatus !== 'present' && Math.random() > 0.6) sStat = 'present';
+                        subData[sub] = sStat;
+                    });
+                    
+                    const dStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                    attendanceData[dStr] = { overall: overallStatus, subjects: subData };
+                }
+            }
+            localStorage.setItem("campus_attendance", JSON.stringify(attendanceData));
+        }
+        // ----------------------------------------------------        
         const daysInMonthForStats = new Date(year, month + 1, 0).getDate();
+        let chartLabels = [];
+        let cumulativePresentData = [];
+        let currentCumulative = 0;
+
+        let subjectStats = {};
+        subjectsList.forEach(s => subjectStats[s] = { total: 0, present: 0 });
+
         for (let d = 1; d <= daysInMonthForStats; d++) {
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+            const shortMonth = monthNames[month].substring(0, 3);
+            chartLabels.push(`${shortMonth} ${d}`);
+
             if (attendanceData[dateStr]) {
-                if (attendanceData[dateStr] === 'present') basePresent++;
-                else if (attendanceData[dateStr] === 'absent') baseAbsent++;
-                else if (attendanceData[dateStr] === 'late') baseLate++;
+                const dayStatus = attendanceData[dateStr].overall;
+                if (dayStatus === 'present') basePresent++;
+                else if (dayStatus === 'absent') baseAbsent++;
+                else if (dayStatus === 'late') baseLate++;
+                
+                // Track subject level stats
+                if (attendanceData[dateStr].subjects) {
+                    const subs = attendanceData[dateStr].subjects;
+                    Object.keys(subs).forEach(s => {
+                        if (!subjectStats[s]) subjectStats[s] = { total: 0, present: 0 };
+                        subjectStats[s].total++;
+                        if (subs[s] === 'present') subjectStats[s].present++;
+                    });
+                }
+            }
+            
+            currentCumulative = basePresent;
+            
+            const cellDate = new Date(year, month, d);
+            // Only plot up to today if it's the current month, or all days if it has data
+            if (cellDate <= today || attendanceData[dateStr]) {
+                cumulativePresentData.push(currentCumulative);
+            } else {
+                cumulativePresentData.push(null);
             }
         }
         
@@ -707,6 +596,26 @@ function initAttendance() {
         if (absentEl) absentEl.textContent = baseAbsent;
         if (lateEl) lateEl.textContent = baseLate;
 
+        const totalImpressionsEl = document.getElementById("totalImpressionsText");
+        if (totalImpressionsEl) totalImpressionsEl.textContent = basePresent;
+        
+        const dateRangeEl = document.getElementById("graphDateRange");
+        if (dateRangeEl) {
+            dateRangeEl.innerHTML = `<option>${monthNames[month]} ${year}</option>`;
+        }
+        
+        const trendEl = document.getElementById("attendanceTrend");
+        if (trendEl) {
+            const percFloat = parseFloat(percentage);
+            if (percFloat >= 75) {
+                trendEl.innerHTML = `▲ +${(percFloat - 75).toFixed(1)}%`;
+                trendEl.style.color = "var(--success)";
+            } else {
+                trendEl.innerHTML = `▼ ${(percFloat - 75).toFixed(1)}%`;
+                trendEl.style.color = "var(--danger)";
+            }
+        }
+
         // Update Chart
         const ctx = document.getElementById('attendanceChart');
         if (ctx && typeof Chart !== 'undefined') {
@@ -714,23 +623,19 @@ function initAttendance() {
                 chartInstance.destroy();
             }
             chartInstance = new Chart(ctx, {
-                type: 'bar',
+                type: 'line',
                 data: {
-                    labels: ['Present', 'Absent', 'Late'],
+                    labels: chartLabels,
                     datasets: [{
-                        label: 'Days',
-                        data: [basePresent, baseAbsent, baseLate],
-                        backgroundColor: [
-                            'rgba(40, 167, 69, 0.6)',
-                            'rgba(220, 53, 69, 0.6)',
-                            'rgba(255, 193, 7, 0.6)'
-                        ],
-                        borderColor: [
-                            'rgb(40, 167, 69)',
-                            'rgb(220, 53, 69)',
-                            'rgb(255, 193, 7)'
-                        ],
-                        borderWidth: 1
+                        label: 'Cumulative Classes Attended',
+                        data: cumulativePresentData,
+                        borderColor: '#0284c7', // Professional blue
+                        backgroundColor: 'rgba(2, 132, 199, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3, // Smooth curve
+                        pointRadius: 3,
+                        pointBackgroundColor: '#0284c7'
                     }]
                 },
                 options: {
@@ -738,23 +643,36 @@ function initAttendance() {
                     maintainAspectRatio: false,
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Classes Attended'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxTicksLimit: 10
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Total Present: ${context.parsed.y}`;
+                                }
+                            }
                         }
                     }
                 }
             });
         }
 
-        // Optionally update progress bars to look dynamic
-        const progressFills = document.querySelectorAll(".subject-progress-fill");
-        progressFills.forEach((el, index) => {
-            const val = Math.min(100, Math.max(0, 70 + (month * 2) + (index * 5)));
-            el.style.width = val + "%";
-            const percentText = el.parentElement.nextElementSibling;
-            if (percentText && percentText.tagName === "STRONG") {
-                percentText.textContent = val + "%";
-            }
-        });
+
 
         dayNames.forEach(day => {
             const header = document.createElement("div");
@@ -787,7 +705,7 @@ function initAttendance() {
             let status = "upcoming";
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             if (attendanceData[dateStr]) {
-                status = attendanceData[dateStr];
+                status = attendanceData[dateStr].overall;
                 dateCell.classList.add(status);
             } else if (cellDate <= today) {
                 // Not marked by faculty yet
@@ -795,7 +713,7 @@ function initAttendance() {
                 dateCell.classList.add("unmarked");
             }
 
-            if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+            if (day === today.getDate()) {
                 dateCell.classList.add("today");
             }
 
@@ -804,11 +722,57 @@ function initAttendance() {
                 dateCell.classList.add("selected");
                 const info = document.getElementById("selectedDateInfo");
                 if (info) {
-                    info.innerHTML = `<strong>${monthNames[month].substring(0, 3)} ${day}, ${year}</strong>: Status <span class="badge badge-${status === 'present' ? 'success' : status === 'absent' ? 'danger' : 'warning'}">${status.toUpperCase()}</span>`;
+                    let breakdownHtml = "";
+                    if (status === 'upcoming' || status === 'unmarked') {
+                        breakdownHtml = `<div style="padding: 10px; color: var(--text-muted); text-align: center;">No attendance data recorded yet.</div>`;
+                    } else if (attendanceData[dateStr] && attendanceData[dateStr].subjects) {
+                        breakdownHtml = `<ul style="list-style: none; padding: 0; margin: 10px 0 0 0; display: flex; flex-direction: column; gap: 8px;">`;
+                        const subs = attendanceData[dateStr].subjects;
+                        Object.keys(subs).forEach(sub => {
+                            const subStatus = subs[sub]; 
+                            const badgeClass = subStatus === 'present' ? 'success' : subStatus === 'absent' ? 'danger' : 'warning';
+                            breakdownHtml += `
+                                <li style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--bg-surface-elevated); border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                                    <span style="font-weight: 600; font-size: 13px;">${sub}</span>
+                                    <span class="badge badge-${badgeClass}" style="font-size: 11px;">${subStatus.toUpperCase()}</span>
+                                </li>`;
+                        });
+                        breakdownHtml += `</ul>`;
+                    }
+
+                    info.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 8px;">
+                            <strong style="font-size: 15px;">${monthNames[month]} ${day}, ${year}</strong>
+                            <span class="badge badge-${status === 'present' ? 'success' : status === 'absent' ? 'danger' : status === 'late' ? 'warning' : 'info'}">${status.toUpperCase()}</span>
+                        </div>
+                        ${breakdownHtml}
+                    `;
                 }
             });
 
             calendar.appendChild(dateCell);
+        }
+
+        // Update Subject Breakdown HTML dynamically
+        const subjContainer = document.getElementById("subjectAttendance");
+        if (subjContainer && Object.keys(subjectStats).length > 0) {
+            let html = "";
+            Object.keys(subjectStats).forEach(s => {
+                const stat = subjectStats[s];
+                const percent = stat.total > 0 ? Math.round((stat.present / stat.total) * 100) : 0;
+                
+                html += `
+                    <div class="subject-row">
+                        <div>
+                            <strong>${s}</strong><br>
+                            <small style="color: var(--text-muted);">${stat.present} / ${stat.total} Classes</small>
+                        </div>
+                        <div class="subject-progress"><div class="subject-progress-fill" style="width: ${percent}%;"></div></div>
+                        <strong>${percent}%</strong>
+                    </div>
+                `;
+            });
+            subjContainer.innerHTML = html || "<div style='color: var(--text-muted);'>No classes recorded for this month.</div>";
         }
     };
 
@@ -961,3 +925,123 @@ function initResources() {
         resourcesGrid.prepend(card);
     });
 }
+
+/* --------------------------------------------------------------------------
+   9. LOST & FOUND LOGIC
+   -------------------------------------------------------------------------- */
+window.handleLostFoundSubmit = function(event) {
+    event.preventDefault();
+    
+    const type = document.getElementById('itemStatus').value;
+    const title = document.getElementById('itemTitle').value;
+    const location = document.getElementById('itemLocation').value;
+    const desc = document.getElementById('itemDesc').value;
+    
+    const newItem = {
+        type: type, // 'lost' or 'found'
+        title: title,
+        location: location,
+        desc: desc,
+        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+    };
+    
+    let items = JSON.parse(localStorage.getItem('campus_lost_found')) || [];
+    items.unshift(newItem);
+    localStorage.setItem('campus_lost_found', JSON.stringify(items));
+    
+    showToast('Item report registered successfully!');
+    document.getElementById('lostFoundForm').reset();
+    
+    initLostFound();
+};
+
+window.initLostFound = function() {
+    const grid = document.querySelector('.events-grid');
+    if (!grid || !document.getElementById('lostFoundForm')) return;
+    
+    let savedItems = JSON.parse(localStorage.getItem('campus_lost_found')) || [];
+    
+    if (savedItems.length === 0) {
+        savedItems = [
+            {
+                type: 'lost',
+                title: 'Wireless Earbuds',
+                location: 'CS Building, 2nd Floor',
+                desc: 'Lost near Computer Science Lab 2 during the afternoon lecture session.',
+                date: 'Reported Today'
+            },
+            {
+                type: 'found',
+                title: 'Leather Key Pouch',
+                location: 'Central Library',
+                desc: 'Found near the central library cafeteria table with 3 keys attached.',
+                date: 'Reported Yesterday'
+            },
+            {
+                type: 'lost',
+                title: 'Data Structures Textbook',
+                location: 'Main Canteen',
+                desc: 'Hardcover edition with handwritten notes inside the front cover.',
+                date: '08 Sept 2026'
+            }
+        ];
+        localStorage.setItem('campus_lost_found', JSON.stringify(savedItems));
+    }
+    
+    const activeFilter = document.querySelector('.filter-tab.active')?.dataset.filter || 'all';
+    
+    grid.innerHTML = "";
+    
+    savedItems.forEach(item => {
+        if (activeFilter !== 'all' && item.type !== activeFilter) return;
+        
+        const card = document.createElement("article");
+        card.className = `event-card lost-card`;
+        card.dataset.category = item.type;
+        
+        let badgeHtml = item.type === 'lost' 
+            ? `<span class="badge badge-danger">LOST ITEM</span>`
+            : `<span class="badge badge-success">FOUND ITEM</span>`;
+            
+        let footerHtml = item.type === 'lost'
+            ? `<span class="badge badge-info">Contact Admin</span>
+               <button class="btn btn-secondary" onclick="alert('Contact security desk or call student helpline.')">Claim Item</button>`
+            : `<span class="badge badge-success">At Security Office</span>
+               <button class="btn btn-primary" onclick="alert('Item deposited at Security Office Gate 1.')">View Details</button>`;
+               
+        card.innerHTML = `
+            <div class="event-content">
+                <div class="notice-header">
+                    ${badgeHtml}
+                    <span class="notice-date">${item.date}</span>
+                </div>
+                <h3>${item.title}</h3>
+                <p>${item.desc}</p>
+                <div class="event-meta">
+                    <span>${item.location}</span>
+                </div>
+                <div class="event-footer">
+                    ${footerHtml}
+                </div>
+            </div>
+        `;
+        
+        grid.appendChild(card);
+    });
+};
+
+// Initialize if on the page
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('lostFoundForm')) {
+        initLostFound();
+        
+        // Setup filter tabs
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+                initLostFound();
+            });
+        });
+    }
+});
