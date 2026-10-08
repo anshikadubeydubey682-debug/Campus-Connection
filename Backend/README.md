@@ -1,2 +1,3 @@
-# Campus-Connection
-A full-stack campus management and student collaboration platform.
+# CampusConnect Backend
+
+Please see the main [README.md](../README.md) at the root of the project for full details about features, tech stack, and setup instructions.

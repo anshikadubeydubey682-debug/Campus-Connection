@@ -91,6 +91,12 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- WebSocket for Real-Time Notifications -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
